@@ -1,0 +1,32 @@
+---
+title: "Assignment_5"
+output: github_document
+---
+
+
+## Part 1 Factor Management
+```{r}
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(gapminder))
+```
+
+
+# Elaboration for the gapminder data set
+
+__1. Drop Oceania__
+Before dropping the unused data the country and continent have 142 and 5 levels repectively. By appling fct_drop on continent, only the level of continent drop to 4 by removing Oceania. And while droplevels() was applied, it applied to all the factors in the structure, therefore, the level of country drop to 140 which mean the country in Oceania were removed. And the level of continent is also reduced to 4. 
+```{r}
+#before dropping Oceania, the number of levels of continent is 5.
+Ocean_drop <- gapminder %>% 
+  filter(continent != "Oceania")
+str(Ocean_drop)
+
+# dropping unused Oceania data
+Ocean_drop %>% 
+  mutate(continent=fct_drop(continent)) %>% 
+  str()
+ 
+Ocean_drop %>% 
+  droplevels() %>% 
+  str()
+```
