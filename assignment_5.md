@@ -14,7 +14,9 @@ suppressPackageStartupMessages(library(plotly))
 Elaboration for the gapminder data set
 ======================================
 
-**1. Drop Oceania** Before dropping the unused data the country and continent have 142 and 5 levels repectively. In addition, the row number before dropping is 1704.
+**1. Drop Oceania**
+
+Before dropping the unused data the country and continent have 142 and 5 levels repectively. In addition, the row number before dropping is 1704.
 
 ``` r
 #before dropping Oceania, the number of levels of continent is 5.
@@ -86,7 +88,9 @@ drop2 <- Ocean_drop %>%
 
     ## [1] 1680
 
-**2. Reorder the levels of `country` or `continent`** The continent is originally ordered alphabetically, here we used different method to reorder the levels of the continient. First, we will check the original looking of the gapminder dataset before reordering. It is obviously that the continent is ordered by alphabetically.
+**2. Reorder the levels of `country` or `continent`**
+
+The continent is originally ordered alphabetically, here we used different method to reorder the levels of the continient. First, we will check the original looking of the gapminder dataset before reordering. It is obviously that the continent is ordered by alphabetically.
 
 ``` r
 levels(gapminder$continent)
@@ -96,7 +100,7 @@ levels(gapminder$continent)
 
 Now we try to reordered the levels of the continent in the following different ways:
 
-1.  Reordered by the maximum GDP per capital of each continent
+i). Reordered by the maximum GDP per capital of each continent
 
 ``` r
 gapminder %>% 
@@ -127,7 +131,7 @@ gapminder %>%
 | Europe    |   49357.19|
 | Asia      |  113523.13|
 
-1.  Reordered by the minimum GDP per capital of each continent
+ii). Reordered by the minimum GDP per capital of each continent
 
 ``` r
 gapminder %>% 
@@ -158,7 +162,7 @@ gapminder %>%
 | Americas  |   1201.6372|
 | Oceania   |  10039.5956|
 
-1.  Reordered by the mean GDP per capital of each continent
+iii). Reordered by the mean GDP per capital of each continent
 
 ``` r
 gapminder %>% 
@@ -364,7 +368,7 @@ This is similar to `saveRDS()/readRDS()` which preserve the class of the data an
 Part 3: Visualization design
 ----------------------------
 
-1.  In this part, I am going to remake the graph I have plotted for the previous assignment. this is a graph plotted in assignment 2. In this graph, I tried to showed the gdpPerCap of each country grouped by the countinent. But this graph did not show that much useful information and it did not show any information how the gdpPercap varies with time. Therefore, we are going to replot this graph.
+i). In this part, I am going to remake the graph I have plotted for the previous assignment. this is a graph plotted in assignment 2. In this graph, I tried to showed the gdpPerCap of each country grouped by the countinent. But this graph did not show that much useful information and it did not show any information how the gdpPercap varies with time. Therefore, we are going to replot this graph.
 
 ``` r
 ggplot(gapminder,aes(gdpPercap,continent))+
@@ -427,8 +431,37 @@ The differences between these two version are:
 -   Various statistic such as maximum, minimum, mean and median were computed and the trend of each was shown instead of raw data.
 -   The trend against the year is shown.
 
-1.  Next we are going to convert this graph into a plotly graph and to see the differences with `ggplot2`.
+ii). Next we are going to convert this graph into a plotly graph and to see the differences with `ggplot2`.
 
 ``` r
- # ggplotly(new_graph)
+ #  ggplotly(new_graph)
 ```
+
+we have access the plpyly graph with `ggplotly(new_graph)` locally, however, this is not compatible with the output github\_document, therefore, the code is commented out.
+
+I have tried to output the html\_document, however, the html file is not readable on github.
+
+The properties of the ployly graph has been explored:
+
+-   The `ploy_ly()` allow user to create interative plots that are powerful in websites.
+
+-   we can zoom in and out at specific regions and see more details by hovering the mouse over the plots
+
+Part 4: Writing figures to file
+-------------------------------
+
+First, use ggsave() to explicitly save a plot to file modified graph. Since by default, the ggsave will save the last graph plotted in the file, so we could compile this graph again.
+
+``` r
+new_graph
+```
+
+![](assignment_5_files/figure-markdown_github/save%20the%20image-1.png)
+
+``` r
+ggsave("modified_graph.png", width=16, height=6, units = "cm")
+```
+
+Then load the graph into this report
+
+![New Graph](modified_graph.png)
