@@ -1,6 +1,10 @@
 ---
 title: "Assignment_5"
-output: html_document
+output:   
+  html_document:
+keep_md: true
+toc: true
+theme: readable
 ---
 
 
@@ -9,7 +13,8 @@ output: html_document
 suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(gapminder))
 suppressPackageStartupMessages(library(forcats))
-suppressPackageStartupMessages(library(plotly)) 
+suppressPackageStartupMessages(library(plotly))  
+
 ```
 
 
