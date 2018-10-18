@@ -10,6 +10,8 @@ suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(gapminder))
 suppressPackageStartupMessages(library(forcats))
 suppressPackageStartupMessages(library(plotly))  
+suppressPackageStartupMessages(library(scales))
+
 
 ```
 
@@ -58,11 +60,14 @@ levels(gapminder$continent)
 
 Now we try to reordered the levels of the continent in the following different ways:
 
-i). Reordered by the maximum GDP per capital of each continent
-```{r, reordered by max, fig.width=6, fig.height=3}
+i). Reordered by the maximum GDP per capital of each continent, the number labelled in the boxplots are the maximum GDP for each continent.
+```{r, reordered by max, fig.width=6, fig.height=5}
 gapminder %>% 
   mutate(continent=fct_reorder(continent,gdpPercap,max)) %>% 
-ggplot(aes(continent,gdpPercap)) + geom_boxplot(aes(fill=continent))
+ggplot(aes(continent,gdpPercap)) + geom_boxplot(aes(fill=continent))+
+stat_summary( fun.y=max, colour="darkred", geom="point", size=2,show.legend  = TRUE ) +
+  stat_summary( fun.y=max, colour="red", geom="text", size = 4, show.legend  = TRUE, 
+               vjust=-0.7, aes( label=round( ..y.., digits=1 ) ) ) 
 
 # to verify that this is reordered using maximum GDP per capital of each continent, we do the following:
 
@@ -77,11 +82,14 @@ gapminder %>%
 ```
 
 
-ii). Reordered by the minimum GDP per capital of each continent
+ii). Reordered by the minimum GDP per capital of each continent, the number labelled in the boxplots are the minimum GDP for each continent.
 ```{r,reordered by min, fig.width=6, fig.height=3 }
 gapminder %>% 
   mutate(continent=fct_reorder(continent,gdpPercap,min)) %>% 
-ggplot(aes(continent,gdpPercap)) + geom_boxplot(aes(fill=continent))
+ggplot(aes(continent,gdpPercap)) + geom_boxplot(aes(fill=continent))+
+  stat_summary( fun.y=min, colour="darkred", geom="point", size=2,show.legend  = TRUE ) +
+  stat_summary( fun.y=min, colour="red", geom="text", size = 4, show.legend  = TRUE, 
+               vjust=-0.7, aes( label=round( ..y.., digits=1 ) ) ) 
 
 # to verify that this is reordered using maximum GDP per capital of each continent, we do the following:
 
@@ -96,12 +104,15 @@ gapminder %>%
 ```
 
 
-iii). Reordered by the mean GDP per capital of each continent
+iii). Reordered by the mean GDP per capital of each continent, the number labelled in the boxplots are the mean GDP for each continent.
 
 ```{r, reordered by mean, fig.width=6, fig.height=3}
 gapminder %>% 
   mutate(continent=fct_reorder(continent,gdpPercap,mean)) %>% 
-ggplot(aes(continent,gdpPercap)) + geom_boxplot(aes(fill=continent))
+ggplot(aes(continent,gdpPercap)) + geom_boxplot(aes(fill=continent))+
+  stat_summary( fun.y=mean, colour="darkred", geom="point", size=2,show.legend  = TRUE ) +
+  stat_summary( fun.y=mean, colour="red", geom="text", size = 4, show.legend  = TRUE, 
+               vjust=-0.7, aes( label=round( ..y.., digits=1 ) ) ) 
 
 
 
@@ -233,13 +244,17 @@ knitr::kable(head(tidy_table))
 new_graph <-  tidy_table %>% 
   ggplot(aes(x = year, y = GDP_value, color = Stat_GDP) ) +
   facet_wrap(~continent) +
-  #use log10 in y-axis
-  scale_y_log10()+
+  #use log10 in y-axis and add more description to the y-axis
+  scale_y_log10(label=dollar_format())+
+  scale_x_continuous()+
   geom_point()+
   #use line to show the trend
   geom_line()+
-  ylab("GDP distribution")+
-  ggtitle("Summarized GDP per Capital vs Year")
+       labs(x = "year",
+          y = "GDP distribution",
+          title = "Summarized GDP per Capital vs Year")+
+  theme(axis.text = element_text(size= 10),
+          strip.background = element_rect(fill = "darkolivegreen2"),panel.background = element_rect(fill = "lightcyan1"))
   
   new_graph
 
@@ -257,8 +272,11 @@ ii). Next we are going to convert this graph into a plotly graph and to see the 
 
 ```{r}
  #  ggplotly(new_graph)
+
 ```
 we have access the plpyly graph with `ggplotly(new_graph)` locally, however, this is not compatible with the output github_document, therefore, the code is commented out.
+The generated html file is in the following link, however, it might not be viewable in the github.
+[link to the plotly garph](https://github.com/STAT545-UBC-students/hw05-janehuang1647/blob/master/new_graph.html)
 
 I have tried to output the html_document, however, the html file is not readable on github.
 
